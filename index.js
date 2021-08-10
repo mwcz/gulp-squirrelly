@@ -21,7 +21,7 @@ function compile(options = sqrl.defaultConfig, data, render) {
 			file.contents = Buffer.from(render ? tpl(_.merge({}, file.data, data), options) : tpl.toString());
 			this.push(file);
 		} catch (error) {
-			this.emit('error', new PluginError('gulp-squirrelly', error, {fileName: file.path}));
+			this.emit('error', new PluginError('gulp-squirrelly', error.message, {fileName: file.path, showProperties: false, showStack: false}));
 		}
 
 		callback();
