@@ -2,6 +2,7 @@
 
 > Render/precompile [Squirrelly templates](https://squirrelly.js.org/)
 
+This package is a near-identical clone of [gulp-template](https://github.com/sindresorhus/gulp-template) by sindresorhus, just with Squirrelly subbed in for lodash.template.  It was thrown together quickly so please open an issue or PR if you find anything that isn't quite right.
 
 ## Install
 
