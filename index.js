@@ -1,9 +1,10 @@
 'use strict';
 const PluginError = require('plugin-error');
 const through = require('through2');
+const sqrl = require('squirrelly');
 const _ = require('lodash');
 
-function compile(options, data, render) {
+function compile(options = sqrl.defaultConfig, data, render) {
 	return through.obj(function (file, encoding, callback) {
 		if (file.isNull()) {
 			callback(null, file);
@@ -11,16 +12,16 @@ function compile(options, data, render) {
 		}
 
 		if (file.isStream()) {
-			callback(new PluginError('gulp-template', 'Streaming not supported'));
+			callback(new PluginError('gulp-squirrelly', 'Streaming not supported'));
 			return;
 		}
 
 		try {
-			const tpl = _.template(file.contents.toString(), options);
-			file.contents = Buffer.from(render ? tpl(_.merge({}, file.data, data)) : tpl.toString());
+			const tpl = sqrl.compile(file.contents.toString(), options);
+			file.contents = Buffer.from(render ? tpl(_.merge({}, file.data, data), options) : tpl.toString());
 			this.push(file);
 		} catch (error) {
-			this.emit('error', new PluginError('gulp-template', error, {fileName: file.path}));
+			this.emit('error', new PluginError('gulp-squirrelly', error, {fileName: file.path}));
 		}
 
 		callback();

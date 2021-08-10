@@ -1,16 +1,15 @@
 {
-	"name": "gulp-template",
-	"version": "5.0.0",
-	"description": "Render/precompile Lodash/Underscore templates",
+	"name": "gulp-squirrelly",
+	"version": "1.0.0",
+	"description": "Render/precompile Squirrelly templates",
 	"license": "MIT",
-	"repository": "sindresorhus/gulp-template",
+	"repository": "mwcz/gulp-squirrelly",
 	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"name": "Michael Clayton",
+		"email": "mclayton@redhat.com"
 	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=12"
 	},
 	"scripts": {
 		"test": "xo && mocha test.js"
@@ -20,8 +19,7 @@
 	],
 	"keywords": [
 		"gulpplugin",
-		"lodash",
-		"underscore",
+		"squirrelly",
 		"template",
 		"compile",
 		"html",
@@ -30,8 +28,9 @@
 		"precompile"
 	],
 	"dependencies": {
-		"lodash": "^4.17.11",
+		"lodash": "^4.17.21",
 		"plugin-error": "^1.0.1",
+		"squirrelly": "^8.0.8",
 		"through2": "^3.0.0"
 	},
 	"devDependencies": {

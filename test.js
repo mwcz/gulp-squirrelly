@@ -3,10 +3,11 @@
 const {strict: assert} = require('assert');
 const Vinyl = require('vinyl');
 const data = require('gulp-data');
+const sqrl = require('squirrelly');
 const template = require('.');
 
-it('should compile Lodash templates', callback => {
-	const stream = template({people: ['foo', 'bar']});
+it('should compile Squirerlly templates', callback => {
+	const stream = template({people: ['foo', 'bar']}, sqrl.getConfig({tags: ['<%', '%>']}));
 
 	stream.on('data', data => {
 		assert.equal(data.contents.toString(), '<li>foo</li><li>bar</li>');
@@ -15,82 +16,7 @@ it('should compile Lodash templates', callback => {
 	stream.on('end', callback);
 
 	stream.write(new Vinyl({
-		contents: Buffer.from('<% _.forEach(people, function (name) { %><li><%- name %></li><% }); %>')
-	}));
-
-	stream.end();
-});
-
-it('should support data via gulp-data', callback => {
-	const dl = [];
-
-	const stream = data(file => {
-		return {
-			dd: file.path
-		};
-	});
-
-	stream.pipe(template({dt: 'path'}));
-
-	stream.on('data', chunk => {
-		dl.push(chunk.contents.toString());
-	});
-
-	stream.on('end', () => {
-		const expected = '<dt>path</dt><dd>bar.txt</dd><dt>path</dt><dd>foo.txt</dd>';
-		assert.equal(dl.sort().join(''), expected);
-		callback();
-	});
-
-	stream.write(new Vinyl({
-		path: 'foo.txt',
-		contents: Buffer.from('<dt><%- dt %></dt><dd><%- dd %></dd>')
-	}));
-
-	stream.write(new Vinyl({
-		path: 'bar.txt',
-		contents: Buffer.from('<dt><%- dt %></dt><dd><%- dd %></dd>')
-	}));
-
-	stream.end();
-});
-
-it('should support Lo-Dash options with gulp-data', callback => {
-	const options = {
-		variable: 'data',
-		imports: {
-			dt: 'path'
-		}
-	};
-
-	const dl = [];
-
-	const stream = data(file => {
-		return {
-			dd: file.path
-		};
-	});
-
-	stream.pipe(template(null, options));
-
-	stream.on('data', chunk => {
-		dl.push(chunk.contents.toString());
-	});
-
-	stream.on('end', () => {
-		const expected = '<dt>path</dt><dd>bar.txt</dd><dt>path</dt><dd>foo.txt</dd>';
-		assert.equal(dl.sort().join(''), expected);
-		callback();
-	});
-
-	stream.write(new Vinyl({
-		path: 'foo.txt',
-		contents: Buffer.from('<dt><%- dt %></dt><dd><%- data.dd %></dd>')
-	}));
-
-	stream.write(new Vinyl({
-		path: 'bar.txt',
-		contents: Buffer.from('<dt><%- dt %></dt><dd><%- data.dd %></dd>')
+		contents: Buffer.from('<% @each(it.people) => name %><li><% name %></li><% /each %>')
 	}));
 
 	stream.end();
@@ -122,7 +48,7 @@ it('should merge gulp-data and data parameter', callback => {
 	stream.on('end', callback);
 
 	stream.write(new Vinyl({
-		contents: Buffer.from('<h1><%= heading %></h1><% _.forEach(people, function (name) { %><li><%- name %></li><% }); %><%= nested.a %>,<%= nested.b %>,<%= nested.c %>')
+		contents: Buffer.from('<h1>{{ it.heading }}</h1>{{ @each(it.people) => name }}<li>{{ name }}</li>{{ /each }}{{ it.nested.a }},{{ it.nested.b }},{{ it.nested.c }}')
 	}));
 
 	stream.end();
@@ -182,7 +108,7 @@ it('should work with no data supplied', callback => {
 	stream.end();
 });
 
-it('should precompile Lodash templates', callback => {
+it('should precompile Squirrelly templates', callback => {
 	const stream = template.precompile();
 
 	stream.on('data', data => {
@@ -198,9 +124,9 @@ it('should precompile Lodash templates', callback => {
 	stream.end();
 });
 
-it('should support Lo-Dash options when precompiling', callback => {
+it('should support Squirrelly options when precompiling', callback => {
 	const options = {
-		variable: 'data'
+		useWith: true
 	};
 
 	const stream = template.precompile(options);
@@ -212,7 +138,7 @@ it('should support Lo-Dash options when precompiling', callback => {
 	stream.on('end', callback);
 
 	stream.write(new Vinyl({
-		contents: Buffer.from('<h1><%= heading %></h1>')
+		contents: Buffer.from('<h1>{{ heading }}</h1>')
 	}));
 
 	stream.end();

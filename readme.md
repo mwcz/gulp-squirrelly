@@ -1,14 +1,12 @@
-# gulp-template
+# gulp-squirrelly
 
-> Render/precompile [Lodash/Underscore templates](https://lodash.com/docs#template)
-
-*Issues with the output should be reported on the Lodash [issue tracker](https://github.com/lodash/lodash/issues).*
+> Render/precompile [Squirrelly templates](https://squirrelly.js.org/)
 
 
 ## Install
 
 ```
-$ npm install --save-dev gulp-template
+$ npm install --save-dev gulp-squirrelly
 ```
 
 
@@ -17,14 +15,14 @@ $ npm install --save-dev gulp-template
 ### `src/greeting.html`
 
 ```erb
-<h1>Hello <%= name %></h1>
+<h1>Hello {{ name }}</h1>
 ```
 
 ### `gulpfile.js`
 
 ```js
 const gulp = require('gulp');
-const template = require('gulp-template');
+const template = require('gulp-squirrelly);
 
 exports.default = () => (
 	gulp.src('src/greeting.html')
@@ -37,7 +35,7 @@ You can alternatively use [gulp-data](https://github.com/colynb/gulp-data) to in
 
 ```js
 const gulp = require('gulp');
-const template = require('gulp-template');
+const template = require('gulp-squirrelly');
 const data = require('gulp-data');
 
 exports.default = () => (
@@ -75,35 +73,38 @@ Data object used to populate the text.
 
 Type: `object`
 
-[Lodash `_.template` options](https://lodash.com/docs#template).
+[Squirrelly configuration](https://squirrelly.js.org/docs/api/configuration).  Defaults to `Sqrl.defaultConfig`.
 
 
 ## Tip
 
-You can also provide your own [interpolation string](https://lodash.com/docs#template) for custom templates.
+You can also provide your own interpolation strings ([see "tags" here](https://squirrelly.js.org/docs/api/configuration)) for custom templates.
 
 ### `src/greeting.html`
 
 ```html
-<h1>Hello {{ name }}</h1>
+<h1>Hello <% name %></h1>
 ```
 
 ### `gulpfile.js`
 
 ```js
 const gulp = require('gulp');
-const template = require('gulp-template');
+const template = require('gulp-squirrelly');
 const data = require('gulp-data');
+const Sqrl = require('squirrelly');
 
 exports.default = () => (
 	gulp.src('src/greeting.html')
-		.pipe(data(() => ({name: 'Sindre'})))
-		.pipe(template(null, {
-			interpolate: /{{(.+?)}}/gs
-		}))
+		.pipe(template(
+			{ name: "Sindre" },
+			Sqrl.getConfig({ tags: ["<%", "%>"] })
+		))
 		.pipe(gulp.dest('dist'))
 );
 ```
+
+Note: `Sqrl.getConfig` merges the object you provide into Squirrelly's default configuration.
 
 ### `dist/greeting.html`
 
