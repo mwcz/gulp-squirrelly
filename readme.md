@@ -16,7 +16,7 @@ $ npm install --save-dev gulp-squirrelly
 ### `src/greeting.html`
 
 ```erb
-<h1>Hello {{ name }}</h1>
+<h1>Hello {{ it.name }}</h1>
 ```
 
 ### `gulpfile.js`
@@ -84,7 +84,7 @@ You can also provide your own interpolation strings ([see "tags" here](https://s
 ### `src/greeting.html`
 
 ```html
-<h1>Hello <% name %></h1>
+<h1>Hello <% it.name %></h1>
 ```
 
 ### `gulpfile.js`
