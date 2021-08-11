@@ -112,8 +112,3 @@ Note: `Sqrl.getConfig` merges the object you provide into Squirrelly's default c
 ```html
 <h1>Hello Sindre</h1>
 ```
-
-
-## Related
-
-- [grunt-template](https://github.com/mathiasbynens/grunt-template) - Grunt version
