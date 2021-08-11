@@ -1,6 +1,6 @@
 {
 	"name": "gulp-squirrelly",
-	"version": "1.0.1",
+	"version": "6.0.0",
 	"description": "Render/precompile Squirrelly templates",
 	"license": "MIT",
 	"repository": "mwcz/gulp-squirrelly",
