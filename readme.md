@@ -23,7 +23,7 @@ $ npm install --save-dev gulp-squirrelly
 
 ```js
 const gulp = require('gulp');
-const template = require('gulp-squirrelly);
+const template = require('gulp-squirrelly');
 
 exports.default = () => (
 	gulp.src('src/greeting.html')
